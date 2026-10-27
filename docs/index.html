@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noty · Notas simples para compartir con tus amigos</title>
+<meta name="description" content="Noty: notas, listas y pizarrones que compartís en vivo con tus amigos, y una burbuja para guardar links, textos e imágenes desde cualquier programa. Para Windows, Linux y Android.">
+<meta property="og:title" content="Noty · Notas simples para compartir con tus amigos">
+<meta property="og:description" content="Notas en vivo con tus amigos y una burbuja que guarda lo que arrastrás desde cualquier programa.">
+<meta property="og:image" content="img/banner.svg">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<style>
+:root {
+    --fondo: #070707; --superficie: #0d0d0d; --superficie-2: #111; --superficie-3: #191919; --hover: #1f1f1f;
+    --borde: #222; --borde-fuerte: #333; --texto: aliceblue; --texto-2: #787878; --texto-3: #a1a1a1; --ok: #6bdc9a;
+    --orbe-1: #5b7dff; --orbe-2: #a47bff; --orbe-3: #ff6fa5; --orbe-4: #4fd8ff;
+    --fuente: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--fondo); color: var(--texto); font-family: var(--fuente); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; }
+.ancho { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+
+/* Barra superior */
+.barra { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(14px); background: rgba(7, 7, 7, .72); border-bottom: 1px solid var(--borde); }
+.barra .ancho { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.marca { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; text-decoration: none; }
+.marca img { width: 30px; height: 30px; }
+.barra nav { display: flex; align-items: center; gap: 22px; font-size: .92rem; color: var(--texto-3); }
+.barra nav a { text-decoration: none; transition: color .2s; }
+.barra nav a:hover { color: var(--texto); }
+
+/* Botones */
+.boton { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 26px; border-radius: 999px; font: inherit; font-weight: 600; text-decoration: none; border: 1px solid var(--borde-fuerte); background: var(--superficie-3); color: var(--texto); cursor: pointer; transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), background .2s, border-color .2s; }
+.boton:hover { transform: translateY(-2px); background: var(--hover); border-color: #444; }
+.boton-principal { background: linear-gradient(135deg, #fff, #cfdcff); color: #0b0b12; border-color: transparent; font-size: 1.05rem; padding: 16px 32px; box-shadow: 0 10px 40px rgba(124, 140, 255, .28); }
+.boton-principal:hover { background: linear-gradient(135deg, #fff, #dde6ff); }
+.boton-chico { padding: 9px 18px; font-size: .88rem; }
+
+/* Hero */
+.hero { position: relative; padding: 84px 0 56px; text-align: center; }
+.hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; pointer-events: none; }
+.hero::before { width: 460px; height: 460px; left: 50%; top: -120px; margin-left: -520px; background: #7c5cff; opacity: .28; animation: flota 14s ease-in-out infinite; }
+.hero::after { width: 380px; height: 380px; left: 50%; top: 40px; margin-left: 140px; background: #ff6fa5; opacity: .2; animation: flota 17s ease-in-out infinite reverse; }
+@keyframes flota { 50% { transform: translate(40px, 30px) scale(1.12); } }
+.hero .orbe-grande { --tam: 108px; margin: 0 auto 30px; }
+.hero h1 { font-size: clamp(2.3rem, 6vw, 4rem); line-height: 1.08; letter-spacing: -.03em; font-weight: 700; }
+.hero h1 span { background: linear-gradient(90deg, #b28bff, #ff86b8, #6ff0cf); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p.bajada { max-width: 620px; margin: 20px auto 34px; font-size: 1.15rem; color: var(--texto-3); }
+.hero .acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.nota-sistema { margin-top: 18px; font-size: .85rem; color: var(--texto-2); min-height: 1.3em; }
+
+/* Orbe: el mismo de la app */
+.burbuja { position: relative; display: grid; place-items: center; width: var(--tam); height: var(--tam); border-radius: 50%; overflow: hidden; isolation: isolate; color: #fff;
+    background: radial-gradient(circle at 50% 50%, rgba(42, 47, 99, .28), rgba(11, 12, 24, .22) 75%);
+    box-shadow: 0 0 0 .5px rgba(255, 255, 255, .12), 0 4px 16px rgba(108, 140, 255, .32), 0 2px 6px rgba(0, 0, 0, .3); }
+.orbe-capa { position: absolute; inset: -30%; border-radius: 50%; pointer-events: none; will-change: transform; }
+.orbe-a { background:
+    radial-gradient(circle calc(var(--tam) * .54) at 34% 36%, var(--orbe-1), color-mix(in srgb, var(--orbe-1) 60%, transparent) 45%, transparent),
+    radial-gradient(circle calc(var(--tam) * .5) at 68% 64%, var(--orbe-2), color-mix(in srgb, var(--orbe-2) 55%, transparent) 45%, transparent);
+    filter: blur(calc(var(--tam) * .115)) saturate(1.25); opacity: .78; animation: orbe-gira 9s linear infinite; }
+.orbe-b { background:
+    radial-gradient(circle calc(var(--tam) * .42) at 66% 32%, var(--orbe-3), color-mix(in srgb, var(--orbe-3) 50%, transparent) 45%, transparent),
+    radial-gradient(circle calc(var(--tam) * .365) at 36% 68%, var(--orbe-4), color-mix(in srgb, var(--orbe-4) 45%, transparent) 45%, transparent);
+    filter: blur(calc(var(--tam) * .115)) saturate(1.25); mix-blend-mode: screen; opacity: .8; animation: orbe-gira-al-reves 13s linear infinite; }
+@keyframes orbe-gira { to { transform: rotate(360deg); } }
+@keyframes orbe-gira-al-reves { from { transform: rotate(0) scale(1.05); } 50% { transform: rotate(-180deg) scale(.92); } to { transform: rotate(-360deg) scale(1.05); } }
+.burbuja-brillo { position: absolute; inset: 0; border-radius: 50%; z-index: 1; background: radial-gradient(56% 26% at 50% 8%, rgba(255, 255, 255, .3), transparent 100%); box-shadow: inset 0 0 0 .75px rgba(255, 255, 255, .4), inset 0 0 10px rgba(255, 255, 255, .16); }
+
+/* Secciones */
+section.bloque { padding: 84px 0; }
+.etiqueta { display: inline-block; padding: 5px 14px; border-radius: 999px; font-size: .78rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #b8c4ff; background: rgba(124, 140, 255, .12); border: 1px solid rgba(124, 140, 255, .25); }
+h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); letter-spacing: -.02em; line-height: 1.15; margin: 14px 0 12px; }
+.sub { color: var(--texto-3); max-width: 620px; font-size: 1.05rem; }
+
+/* La burbuja (demo del recorrido) */
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.demo-marco { position: relative; border-radius: 28px; background: var(--superficie); border: 1px solid var(--borde); padding: 34px 26px 26px; box-shadow: 0 30px 80px rgba(0, 0, 0, .55); }
+.demo-marco video, .demo-marco > img { width: 100%; display: block; border-radius: 16px; }
+.demo-burbuja { position: relative; width: 260px; height: 112px; margin: 0 auto 4px; transform-origin: top center; scale: 1.25; }
+.demo-ventana { position: absolute; left: 0; top: 10px; width: 150px; height: 92px; padding: 18px 12px 10px; border-radius: 12px; background: var(--superficie-3); box-shadow: inset 0 0 0 1px var(--borde); }
+.demo-barra { position: absolute; top: 7px; left: 10px; width: 26px; height: 5px; border-radius: 3px; background: var(--borde-fuerte); }
+.demo-linea { display: block; height: 6px; margin: 6px 0; border-radius: 3px; background: var(--hover); }
+.demo-corta { width: 60%; }
+.demo-arrastre { position: absolute; left: 22px; top: 44px; animation: demo-arrastrar 4.6s cubic-bezier(.45, 0, .25, 1) infinite; }
+.demo-link { display: inline-block; padding: 5px 9px; border-radius: 9px; font-size: .7rem; font-weight: 600; white-space: nowrap; background: var(--superficie-2); box-shadow: 0 4px 12px rgba(0, 0, 0, .3); animation: demo-link 4.6s ease infinite; }
+.demo-cursor { position: absolute; left: 40px; top: 14px; width: 18px; height: 18px; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .35)); }
+.demo-orbe { --tam: 52px; position: absolute; right: 8px; top: 30px; animation: demo-come 4.6s ease infinite; }
+.demo-orbe::after { content: ""; position: absolute; inset: 0; border-radius: 50%; z-index: 2; background: #30d158; opacity: 0; animation: demo-tinte 4.6s ease infinite; }
+.demo-orbe svg { position: relative; z-index: 3; width: 24px; height: 24px; opacity: 0; animation: demo-check 4.6s ease infinite; }
+@keyframes demo-arrastrar { 0%, 12% { transform: translate(0, 0); } 62%, 100% { transform: translate(140px, 2px); } }
+@keyframes demo-link { 0%, 55% { opacity: 1; transform: scale(1); } 68%, 100% { opacity: 0; transform: scale(.3); } }
+@keyframes demo-come { 0%, 60%, 100% { transform: scale(1); } 68% { transform: scale(1.14); } 76% { transform: scale(.96); } }
+@keyframes demo-tinte { 0%, 66% { opacity: 0; } 74%, 92% { opacity: .3; } 100% { opacity: 0; } }
+@keyframes demo-check { 0%, 68% { opacity: 0; } 76%, 92% { opacity: 1; } 100% { opacity: 0; } }
+.demo-pie { text-align: center; margin-top: 26px; font-weight: 600; }
+.demo-pie small { display: block; color: var(--texto-2); font-weight: 400; margin-top: 2px; }
+.lista-simple { list-style: none; padding: 0; margin-top: 22px; display: grid; gap: 12px; }
+.lista-simple li { display: flex; gap: 12px; color: var(--texto-3); }
+.lista-simple li::before { content: "✓"; flex: none; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; font-size: .75rem; font-weight: 700; color: #0b0b12; background: var(--ok); margin-top: 2px; }
+.lista-simple strong { color: var(--texto); }
+
+/* Funciones */
+.grilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 40px; }
+.tarjeta { padding: 26px; border-radius: 24px; background: var(--superficie); border: 1px solid var(--borde); transition: transform .3s, border-color .3s, background .3s; }
+.tarjeta:hover { transform: translateY(-4px); border-color: var(--borde-fuerte); background: var(--superficie-2); }
+.tarjeta .emoji { font-size: 1.7rem; display: block; margin-bottom: 12px; }
+.tarjeta h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.tarjeta p { color: var(--texto-3); font-size: .93rem; }
+
+/* Capturas (se muestran solo las que existen) */
+.galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 36px; }
+.galeria figure { border-radius: 22px; overflow: hidden; background: var(--superficie); border: 1px solid var(--borde); }
+.galeria img { width: 100%; display: block; }
+.galeria figcaption { padding: 12px 16px; color: var(--texto-3); font-size: .9rem; }
+
+/* Descargas */
+.descargas { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 36px; }
+.descarga { display: flex; flex-direction: column; gap: 6px; padding: 24px; border-radius: 24px; background: var(--superficie); border: 1px solid var(--borde); }
+.descarga.es-tuyo { border-color: rgba(124, 140, 255, .55); box-shadow: 0 0 0 1px rgba(124, 140, 255, .25), 0 20px 50px rgba(108, 140, 255, .12); }
+.descarga h3 { font-size: 1.1rem; }
+.descarga small { color: var(--texto-2); }
+.descarga .boton { margin-top: 12px; }
+.pasos { margin-top: 34px; display: grid; gap: 10px; }
+details { border-radius: 18px; background: var(--superficie); border: 1px solid var(--borde); padding: 4px 22px; }
+details[open] { padding-bottom: 16px; }
+summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
+summary::after { content: "+"; color: var(--texto-2); font-size: 1.3rem; line-height: 1; transition: transform .25s; }
+details[open] summary::after { transform: rotate(45deg); }
+details p, details ol, details ul { color: var(--texto-3); font-size: .95rem; }
+details ol, details ul { padding-left: 20px; display: grid; gap: 6px; }
+code { font-family: ui-monospace, "Cascadia Code", Menlo, monospace; font-size: .86em; padding: 2px 7px; border-radius: 7px; background: var(--superficie-3); border: 1px solid var(--borde); }
+.aviso { margin-top: 20px; padding: 16px 20px; border-radius: 18px; background: rgba(255, 207, 112, .07); border: 1px solid rgba(255, 207, 112, .22); color: #e8d9b0; font-size: .92rem; }
+
+footer { padding: 46px 0 60px; border-top: 1px solid var(--borde); color: var(--texto-2); font-size: .9rem; text-align: center; }
+
+/* Aparecer al bajar */
+.aparece { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.22, 1, .36, 1), transform .8s cubic-bezier(.22, 1, .36, 1); }
+.aparece.visto { opacity: 1; transform: none; }
+
+@media (max-width: 820px) {
+    .dos { grid-template-columns: 1fr; gap: 36px; }
+    .barra nav a:not(.boton) { display: none; }
+    .demo-burbuja { scale: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 12s !important; transition: none !important; }
+    .aparece { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="barra">
+    <div class="ancho">
+        <a class="marca" href="#"><img src="icono.svg" alt="" width="30" height="30"> Noty</a>
+        <nav>
+            <a href="#burbuja">La burbuja</a>
+            <a href="#funciones">Funciones</a>
+            <a href="#descargar" class="boton boton-chico">Descargar</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+<section class="hero">
+    <div class="ancho">
+        <div class="burbuja orbe-grande" aria-hidden="true"><span class="orbe-capa orbe-a"></span><span class="orbe-capa orbe-b"></span><span class="burbuja-brillo"></span></div>
+        <h1>Notas simples,<br><span>compartidas en vivo.</span></h1>
+        <p class="bajada">Escribí, dibujá y guardá lo que encontrás. Y mirá cómo tus amigos escriben en tu nota, letra por letra. Gratis, para Windows, Linux y Android.</p>
+        <div class="acciones">
+            <a id="boton-descarga" class="boton boton-principal" href="https://github.com/codewtato/noty-descargas/releases/latest">Descargar Noty</a>
+            <a class="boton" href="#burbuja">Ver la burbuja ✨</a>
+        </div>
+        <p class="nota-sistema" id="nota-sistema"></p>
+    </div>
+</section>
+
+<section class="bloque" id="burbuja">
+    <div class="ancho dos">
+        <div class="aparece">
+            <span class="etiqueta">Solo en Noty</span>
+            <h2>La burbuja que guarda todo.</h2>
+            <p class="sub">Una pelotita que vive al costado de tu pantalla. Estás viendo un reel, un artículo o una foto: lo arrastrás hasta ahí, y listo.</p>
+            <ul class="lista-simple">
+                <li><span><strong>Arrastrás y soltás</strong> un link, un texto o una imagen desde cualquier programa.</span></li>
+                <li><span><strong>Copiar = guardar:</strong> copiás un link de Instagram, TikTok o YouTube y te pregunta si lo guardás.</span></li>
+                <li><span><strong>Capturas:</strong> si sacaste una captura mientras no estabas en Noty, te ofrece guardarla.</span></li>
+                <li><span>Después lo pasás a una nota cuando quieras. Se prende y se apaga desde tu perfil.</span></li>
+            </ul>
+        </div>
+        <div class="aparece">
+            <div class="demo-marco" id="demo-marco">
+                <div class="demo-burbuja" aria-hidden="true" id="demo-css">
+                    <div class="demo-ventana"><span class="demo-barra"></span><span class="demo-linea"></span><span class="demo-linea demo-corta"></span><span class="demo-linea"></span></div>
+                    <div class="demo-arrastre">
+                        <span class="demo-link">🔗 Reel de Instagram</span>
+                        <svg class="demo-cursor" viewBox="0 0 24 24"><path d="M5 3l14 9-6.2 1.3L16 20l-2.6 1.2-3.2-6.6L5 19z" fill="#fff" stroke="#1a1a1a" stroke-width="1.2" stroke-linejoin="round"/></svg>
+                    </div>
+                    <div class="demo-orbe burbuja"><span class="orbe-capa orbe-a"></span><span class="orbe-capa orbe-b"></span><span class="burbuja-brillo"></span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4L18 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                </div>
+                <p class="demo-pie">Soltás un link sobre la burbuja y queda guardado<small>Desde cualquier programa. También texto e imágenes.</small></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bloque" id="funciones">
+    <div class="ancho">
+        <div class="aparece">
+            <span class="etiqueta">Todo lo que hace</span>
+            <h2>Simple por fuera, completo por dentro.</h2>
+        </div>
+        <div class="grilla">
+            <article class="tarjeta aparece"><span class="emoji">🤝</span><h3>En vivo con tus amigos</h3><p>Compartí una nota por su @usuario y mirá cómo escriben, letra por letra. Ves quién está en la nota.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">🎨</span><h3>Notas, listas y pizarrones</h3><p>Listas con casillas, imágenes, emojis y un pizarrón para dibujar a mano alzada, con mouse, touch o lápiz.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">💬</span><h3>Chat y cartas</h3><p>Mensajes con emojis y notas adjuntas, y cartas con papel y animación para decirle algo lindo a alguien.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">⏰</span><h3>Recordatorios</h3><p>Avisos del sistema que llegan aunque cierres la ventana: Noty queda en la bandeja y en el celular también.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">🎙️</span><h3>Che Noty</h3><p>Pedile por voz que cree una nota, abra otra o le mande un mensaje a un amigo. Siempre te pregunta antes de compartir.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">🔒</span><h3>Notas con PIN</h3><p>Cifrá las notas privadas con un PIN. Ni el servidor las puede leer.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">📴</span><h3>Funciona sin internet</h3><p>Escribí sin conexión: se sube todo cuando vuelve. Y sin cuenta, tus notas quedan solo en tu equipo.</p></article>
+            <article class="tarjeta aparece"><span class="emoji">✨</span><h3>Noty Premium</h3><p>Temas animados, colores para tus notas, estilos de burbuja y el triple de pedidos a Noty IA.</p></article>
+        </div>
+    </div>
+</section>
+
+<section class="bloque" id="capturas" hidden>
+    <div class="ancho">
+        <span class="etiqueta">Así se ve</span>
+        <h2>Capturas</h2>
+        <div class="galeria" id="galeria">
+            <figure><img src="img/captura-1.png" alt="Pantalla de inicio de Noty"><figcaption>Inicio</figcaption></figure>
+            <figure><img src="img/captura-2.png" alt="Una nota compartida en vivo"><figcaption>Notas compartidas en vivo</figcaption></figure>
+            <figure><img src="img/captura-3.png" alt="El pizarrón de Noty"><figcaption>Pizarrón</figcaption></figure>
+            <figure><img src="img/captura-4.png" alt="El chat de Noty"><figcaption>Chat</figcaption></figure>
+        </div>
+    </div>
+</section>
+
+<section class="bloque" id="descargar">
+    <div class="ancho">
+        <div class="aparece">
+            <span class="etiqueta">Descargar</span>
+            <h2>Elegí tu sistema.</h2>
+            <p class="sub" id="version-texto">Siempre la última versión. Se actualiza sola.</p>
+        </div>
+        <div class="descargas aparece" id="descargas">
+            <div class="descarga" data-so="windows"><h3>Windows 10 / 11</h3><small>Instalador (.exe)</small><a class="boton" href="https://github.com/codewtato/noty-descargas/releases/latest" data-buscar="setup.exe">Descargar</a></div>
+            <div class="descarga" data-so="android"><h3>Android</h3><small>Archivo APK</small><a class="boton" href="https://github.com/codewtato/noty-descargas/releases/latest/download/Noty.apk" data-buscar=".apk">Descargar</a></div>
+            <div class="descarga" data-so="linux"><h3>Linux</h3><small>AppImage (cualquier distro)</small><a class="boton" href="https://github.com/codewtato/noty-descargas/releases/latest" data-buscar=".AppImage">Descargar</a></div>
+            <div class="descarga" data-so="linux-rpm"><h3>Fedora / openSUSE</h3><small>Paquete .rpm</small><a class="boton" href="https://github.com/codewtato/noty-descargas/releases/latest" data-buscar=".rpm">Descargar</a></div>
+        </div>
+
+        <div class="aviso aparece">🛡️ <strong>Si Windows dice "protegió tu PC":</strong> es normal en apps nuevas que todavía no tienen firma paga. Tocá <strong>Más información → Ejecutar de todas formas</strong>.</div>
+
+        <div class="pasos aparece">
+            <details><summary>Cómo instalar en Windows</summary><ol><li>Abrí el archivo <code>…setup.exe</code> que descargaste.</li><li>Si aparece "Windows protegió tu PC", tocá <strong>Más información</strong> y después <strong>Ejecutar de todas formas</strong>.</li><li>Seguí el instalador. Noty queda en la bandeja y se actualiza solo.</li></ol></details>
+            <details><summary>Cómo instalar en Android</summary><ol><li>Descargá el archivo <code>Noty.apk</code> desde el celular.</li><li>Abrilo. Android te va a pedir permiso para instalar apps de esta fuente: aceptalo.</li><li>Después las actualizaciones se bajan e instalan desde la misma app.</li></ol></details>
+            <details><summary>Cómo instalar en Linux</summary><ul><li><strong>AppImage:</strong> <code>chmod +x Noty*.AppImage</code> y abrilo con doble clic.</li><li><strong>Fedora / openSUSE:</strong> <code>sudo dnf install ./Noty-*.rpm</code></li></ul></details>
+            <details><summary>¿Necesito una cuenta?</summary><p>No. Sin cuenta tus notas quedan solo en tu equipo. Con cuenta se sincronizan, funcionan en todos tus dispositivos y las podés compartir con amigos. Podés entrar con correo, Google, Discord o GitHub.</p></details>
+            <details><summary>¿Es gratis? ¿Qué es Premium?</summary><p>Noty es gratis. Premium es opcional: agrega temas animados, colores para tus notas, estilos de burbuja y más pedidos diarios a Noty IA.</p></details>
+        </div>
+    </div>
+</section>
+</main>
+
+<footer>
+    <div class="ancho">
+        <p>Hecho con cariño · <a href="https://github.com/codewtato/noty-descargas/releases">Todas las versiones</a> · <a href="https://github.com/codewtato/noty-descargas/issues">Reportar un problema</a></p>
+        <p style="margin-top:8px">Este repositorio solo tiene los instaladores; el código de Noty es privado.</p>
+    </div>
+</footer>
+
+<script>
+(() => {
+    // --- Aparecer al bajar ---
+    const mirador = "IntersectionObserver" in window ? new IntersectionObserver((entradas) => entradas.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("visto"); mirador.unobserve(e.target); }
+    }), { threshold: 0.12 }) : null;
+    document.querySelectorAll(".aparece").forEach((el) => mirador ? mirador.observe(el) : el.classList.add("visto"));
+
+    // --- Sistema del visitante ---
+    const ua = navigator.userAgent;
+    const so = /android/i.test(ua) ? "android" : /windows/i.test(ua) ? "windows" : /linux|x11/i.test(ua) && !/android/i.test(ua) ? "linux" : /iphone|ipad|mac/i.test(ua) ? "otro" : "otro";
+    const nombres = { windows: "Windows", android: "Android", linux: "Linux", otro: "" };
+    const boton = document.getElementById("boton-descarga");
+    const nota = document.getElementById("nota-sistema");
+    const tarjeta = document.querySelector(`.descarga[data-so="${so}"]`);
+    if (tarjeta) tarjeta.classList.add("es-tuyo");
+    if (so === "otro") nota.textContent = "Noty todavía no tiene versión para este dispositivo. Está para Windows, Linux y Android.";
+    else boton.textContent = `Descargar para ${nombres[so]}`;
+
+    // --- Última versión: el botón baja directo el archivo correcto ---
+    fetch("https://api.github.com/repos/codewtato/noty-descargas/releases/latest")
+        .then((r) => (r.ok ? r.json() : Promise.reject()))
+        .then((version) => {
+            const archivos = version.assets || [];
+            document.getElementById("version-texto").textContent = `Última versión: ${version.tag_name}. Se actualiza sola.`;
+            document.querySelectorAll("[data-buscar]").forEach((enlace) => {
+                const buscado = enlace.dataset.buscar.toLowerCase();
+                const archivo = archivos.find((a) => a.name.toLowerCase().endsWith(buscado));
+                if (archivo) enlace.href = archivo.browser_download_url;
+                else if (buscado !== ".apk") enlace.closest(".descarga").style.opacity = ".45";
+            });
+            const clave = { windows: "setup.exe", android: ".apk", linux: ".appimage", otro: "" }[so];
+            const directo = archivos.find((a) => clave && a.name.toLowerCase().endsWith(clave));
+            if (directo) boton.href = directo.browser_download_url;
+            if (so !== "otro" && !directo && so !== "android") nota.textContent = "Todavía no hay un instalador para tu sistema en la última versión.";
+        })
+        .catch(() => { /* sin la API, los botones llevan a la página de la última versión */ });
+
+    // --- Si hay un video de la burbuja, reemplaza a la animación ---
+    fetch("img/burbuja.mp4", { method: "HEAD" }).then((r) => {
+        if (!r.ok) return;
+        const video = document.createElement("video");
+        Object.assign(video, { autoplay: true, loop: true, muted: true, playsInline: true });
+        video.setAttribute("aria-label", "Demostración de la burbuja de Noty");
+        video.innerHTML = '<source src="img/burbuja.mp4" type="video/mp4">';
+        const demo = document.getElementById("demo-css");
+        demo.replaceWith(video);
+        video.play().catch(() => {});
+    }).catch(() => {});
+
+    // --- Capturas: solo se muestran las que existen ---
+    const galeria = document.getElementById("galeria");
+    let pendientes = galeria.querySelectorAll("img").length;
+    galeria.querySelectorAll("img").forEach((img) => {
+        const resolver = () => {
+            if (--pendientes === 0 && galeria.querySelector("figure")) document.getElementById("capturas").hidden = false;
+        };
+        img.addEventListener("error", () => { img.closest("figure").remove(); resolver(); });
+        img.addEventListener("load", resolver);
+    });
+})();
+</script>
+</body>
+</html>

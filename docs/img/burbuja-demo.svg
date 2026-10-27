@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 280" role="img" aria-label="Arrastrás un link hasta la burbuja de Noty y queda guardado">
+  <defs>
+    <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>
+    <clipPath id="esfera"><circle cx="452" cy="112" r="52"/></clipPath>
+    <radialGradient id="a1" cx="34%" cy="36%" r="54%"><stop offset="0" stop-color="#5b7dff"/><stop offset=".45" stop-color="#5b7dff" stop-opacity=".6"/><stop offset="1" stop-color="#5b7dff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="a2" cx="68%" cy="64%" r="50%"><stop offset="0" stop-color="#a47bff"/><stop offset=".45" stop-color="#a47bff" stop-opacity=".55"/><stop offset="1" stop-color="#a47bff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b1" cx="66%" cy="32%" r="42%"><stop offset="0" stop-color="#ff6fa5"/><stop offset=".45" stop-color="#ff6fa5" stop-opacity=".5"/><stop offset="1" stop-color="#ff6fa5" stop-opacity="0"/></radialGradient>
+    <radialGradient id="b2" cx="36%" cy="68%" r="37%"><stop offset="0" stop-color="#4fd8ff"/><stop offset=".45" stop-color="#4fd8ff" stop-opacity=".45"/><stop offset="1" stop-color="#4fd8ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="luz" cx="50%" cy="8%" r="60%"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+  </defs>
+
+  <rect width="520" height="280" rx="28" fill="#070707"/>
+
+  <!-- Ventana de otro programa -->
+  <g>
+    <rect x="16" y="24" width="300" height="184" rx="24" fill="#191919" stroke="#222" stroke-width="2"/>
+    <rect x="36" y="42" width="52" height="10" rx="5" fill="#333"/>
+    <rect x="36" y="76" width="260" height="12" rx="6" fill="#1f1f1f"/>
+    <rect x="36" y="100" width="156" height="12" rx="6" fill="#1f1f1f"/>
+    <rect x="36" y="124" width="260" height="12" rx="6" fill="#1f1f1f"/>
+    <rect x="36" y="148" width="210" height="12" rx="6" fill="#1f1f1f"/>
+  </g>
+
+  <!-- El link y el cursor viajan juntos hasta la burbuja -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite"
+      calcMode="spline" keyTimes="0;0.12;0.62;1" keySplines=".45 0 .25 1;.45 0 .25 1;0 0 1 1"
+      values="0 0;0 0;280 4;280 4"/>
+    <g>
+      <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.04;0.55;0.68;1" values="0;1;1;0;0"/>
+      <rect x="44" y="88" width="178" height="38" rx="18" fill="#111" stroke="#333" stroke-width="1.5"/>
+      <path d="M62 107h6m6 0h6" fill="none" stroke="#a1a1a1" stroke-width="3" stroke-linecap="round"/>
+      <text x="96" y="112" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="15" font-weight="600" fill="aliceblue">Reel de Instagram</text>
+    </g>
+    <g transform="translate(112 98)">
+      <path d="M5 3l14 9-6.2 1.3L16 20l-2.6 1.2-3.2-6.6L5 19z" transform="scale(1.7)" fill="#fff" stroke="#1a1a1a" stroke-width="1.2" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- La burbuja: se infla un poquito cuando se come el link y muestra el tilde -->
+  <g>
+    <circle cx="452" cy="112" r="52" fill="#0d0d18"/>
+    <g clip-path="url(#esfera)">
+      <g filter="url(#blur)" opacity=".8">
+        <g>
+          <animateTransform attributeName="transform" type="rotate" from="0 452 112" to="360 452 112" dur="9s" repeatCount="indefinite"/>
+          <circle cx="452" cy="112" r="78" fill="url(#a1)"/>
+          <circle cx="452" cy="112" r="78" fill="url(#a2)"/>
+        </g>
+        <g style="mix-blend-mode:screen">
+          <animateTransform attributeName="transform" type="rotate" from="360 452 112" to="0 452 112" dur="13s" repeatCount="indefinite"/>
+          <circle cx="452" cy="112" r="78" fill="url(#b1)"/>
+          <circle cx="452" cy="112" r="78" fill="url(#b2)"/>
+        </g>
+      </g>
+      <rect x="400" y="60" width="104" height="104" fill="#30d158">
+        <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.66;0.72;0.92;1" values="0;0;0.28;0.28;0"/>
+      </rect>
+    </g>
+    <circle cx="452" cy="112" r="52" fill="url(#luz)"/>
+    <circle cx="452" cy="112" r="51" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.5"/>
+    <path d="M437 112.5l9 9 17-17" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+      <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.68;0.74;0.92;1" values="0;0;1;1;0"/>
+    </path>
+    <circle cx="452" cy="112" r="52" fill="none" stroke="#30d158" stroke-width="3" opacity="0">
+      <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.66;0.72;0.92;1" values="0;0;.7;.7;0"/>
+    </circle>
+    <circle cx="452" cy="112" r="52" fill="none" stroke="#30d158" stroke-width="2" opacity="0">
+      <animate attributeName="r" dur="6s" repeatCount="indefinite" keyTimes="0;0.7;0.9;1" values="52;52;78;78"/>
+      <animate attributeName="opacity" dur="6s" repeatCount="indefinite" keyTimes="0;0.7;0.9;1" values="0;.6;0;0"/>
+    </circle>
+  </g>
+
+  <text x="260" y="248" text-anchor="middle" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="19" font-weight="600" fill="aliceblue">Soltás un link sobre la burbuja y queda guardado</text>
+  <text x="260" y="270" text-anchor="middle" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="13" fill="#787878">Desde cualquier programa. También texto e imágenes.</text>
+</svg>

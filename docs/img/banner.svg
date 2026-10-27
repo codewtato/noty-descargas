@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" role="img" aria-label="Noty: notas simples para compartir con tus amigos">
+  <defs>
+    <filter id="difuso" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+    <clipPath id="orbe"><circle cx="230" cy="180" r="112"/></clipPath>
+    <radialGradient id="brillo" cx="35%" cy="28%" r="60%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="titulo" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cdd9ff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="360" fill="#070707"/>
+  <!-- Resplandor de fondo -->
+  <g filter="url(#difuso)" opacity=".55">
+    <circle cx="230" cy="180" r="150" fill="#b28bff">
+      <animate attributeName="r" values="150;175;150" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="1080" cy="90" r="120" fill="#ff86b8" opacity=".35">
+      <animate attributeName="cx" values="1080;1010;1080" dur="9s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- El orbe -->
+  <g clip-path="url(#orbe)">
+    <rect x="100" y="60" width="260" height="260" fill="#1a1426"/>
+    <g filter="url(#difuso)">
+      <circle r="78" fill="#b28bff"><animateMotion dur="7s" repeatCount="indefinite" path="M170 130 C 260 110 300 190 240 240 C 190 280 150 220 170 130"/></circle>
+      <circle r="70" fill="#ff9f7a"><animateMotion dur="8s" repeatCount="indefinite" path="M290 150 C 330 220 240 290 190 230 C 150 180 230 90 290 150"/></circle>
+      <circle r="66" fill="#ff86b8"><animateMotion dur="9s" repeatCount="indefinite" path="M200 250 C 140 190 220 100 290 180 C 330 230 250 300 200 250"/></circle>
+      <circle r="60" fill="#6ff0cf"><animateMotion dur="10s" repeatCount="indefinite" path="M260 110 C 330 140 300 260 220 250 C 160 240 180 120 260 110"/></circle>
+    </g>
+    <circle cx="230" cy="180" r="112" fill="url(#brillo)"/>
+  </g>
+  <circle cx="230" cy="180" r="112" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="2"/>
+
+  <!-- Texto -->
+  <text x="420" y="188" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="108" font-weight="700" fill="url(#titulo)" letter-spacing="-3">Noty</text>
+  <text x="424" y="238" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="30" fill="#a1a1a1">Notas simples. Guardados al vuelo.</text>
+  <text x="424" y="278" font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="30" fill="#a1a1a1">Compartí con tus amigos, en vivo.</text>
+</svg>
