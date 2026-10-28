@@ -28,13 +28,6 @@ Una pelotita que vive al costado de tu pantalla. Estás viendo un reel, un artí
   <img src="docs/img/burbuja-demo.svg" alt="Arrastrás un link hasta la burbuja de Noty y queda guardado" width="640">
 </p>
 
-<!--
-  Para poner un GIF o video real de la burbuja:
-  1. Subí el archivo a docs/img/burbuja.gif (o burbuja.mp4)
-  2. Reemplazá la imagen de arriba por:  <img src="docs/img/burbuja.gif" alt="La burbuja de Noty" width="640">
-  El sitio web usa docs/img/burbuja.mp4 solo, si existe.
--->
-
 - **Arrastrás y soltás** un link, un texto o una imagen desde cualquier programa.
 - **Copiar = guardar:** copiás un link de Instagram, TikTok o YouTube y te pregunta si lo guardás.
 - **Capturas:** si sacaste una captura mientras no estabas en Noty, te ofrece guardarla.
@@ -53,22 +46,14 @@ Una pelotita que vive al costado de tu pantalla. Estás viendo un reel, un artí
 | 📴 **Sin internet** | Escribí sin conexión: se sube todo cuando vuelve. Sin cuenta, tus notas quedan solo en tu equipo. |
 | ✦ **Noty Premium** | Temas animados, colores para tus notas, estilos de burbuja y el triple de pedidos a Noty IA. |
 
-<!--
-## 📸 Capturas
-<p align="center">
-  <img src="docs/img/captura-1.png" width="45%"> <img src="docs/img/captura-2.png" width="45%">
-</p>
-(Descomentá esta sección cuando subas capturas a docs/img/)
--->
-
 ## ⬇️ Descargar
 
-👉 **[Descargar la última versión](../../releases/latest)** (o usá el [sitio web](https://codewtato.github.io/noty-descargas/), que elige el archivo correcto para tu sistema).
+👉 **[Descargar la última versión](https://github.com/codewtato/noty-descargas/releases/latest)** (o usá el [sitio web](https://codewtato.github.io/noty-descargas/), que elige el archivo correcto para tu sistema).
 
 | Sistema | Archivo |
 |---|---|
 | 🪟 **Windows 10 / 11** | `…x64-setup.exe` |
-| 🤖 **Android** | [`Noty.apk`](../../releases/latest/download/Noty.apk) |
+| 🤖 **Android** | [`Noty.apk`](https://github.com/codewtato/noty-descargas/releases/latest/download/Noty.apk) |
 | 🐧 **Cualquier Linux** | `….AppImage` |
 | 🎩 **Fedora / openSUSE** | `….rpm` |
 
@@ -126,7 +111,7 @@ Tus notas son tuyas. Las notas con PIN se cifran en tu dispositivo antes de subi
 <details>
 <summary><b>Encontré un problema</b></summary>
 
-Contanoslo en [Issues](../../issues) o desde **Ayuda** dentro de la app.
+Contanoslo en [Issues](https://github.com/codewtato/noty-descargas/issues) o desde **Ayuda** dentro de la app.
 </details>
 
 ---
