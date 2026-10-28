@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://codewtato.github.io/noty-descargas/"><b>🌐 Sitio web</b></a> &nbsp;·&nbsp;
-  <a href="https://codewtato.github.io/noty-descargas/"><b>⬇️ Descargar</b></a> &nbsp;·&nbsp;
+  <a href="https://github.com/codewtato/noty-descargas/releases"><b>⬇️ Descargar</b></a> &nbsp;·&nbsp;
   <a href="#-preguntas-frecuentes"><b>❓ Preguntas</b></a>
 </p>
 
