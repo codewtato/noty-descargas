@@ -3,14 +3,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/codewtato/noty-descargas/releases/latest"><img alt="Última versión" src="https://img.shields.io/github/v/release/codewtato/noty-descargas?style=for-the-badge&color=7c5cff&label=%C3%BAltima%20versi%C3%B3n"></a>
-  <a href="https://github.com/codewtato/noty-descargas/releases"><img alt="Descargas" src="https://img.shields.io/github/downloads/codewtato/noty-descargas/total?style=for-the-badge&color=ff6fa5&label=descargas"></a>
-  <img alt="Plataformas" src="https://img.shields.io/badge/Windows%20%C2%B7%20Linux%20%C2%B7%20Android-111111?style=for-the-badge">
-</p>
-
-<p align="center">
   <a href="https://codewtato.github.io/noty-descargas/"><b>🌐 Sitio web</b></a> &nbsp;·&nbsp;
-  <a href="#-descargar"><b>⬇️ Descargar</b></a> &nbsp;·&nbsp;
+  <a href="https://codewtato.github.io/noty-descargas/"><b>⬇️ Descargar</b></a> &nbsp;·&nbsp;
   <a href="#-preguntas-frecuentes"><b>❓ Preguntas</b></a>
 </p>
 
